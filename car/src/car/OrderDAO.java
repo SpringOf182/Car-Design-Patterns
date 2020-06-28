@@ -1,4 +1,4 @@
-package car;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -90,21 +90,16 @@ public class OrderDAO{
         Connection connection = DBManager.getConnection();
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        
         StringBuilder sqlStatement = new StringBuilder();
         sqlStatement.append("SELECT * FROM order_list WHERE recipentUID = ? ORDER BY state");
         try {
         	preparedStatement = connection.prepareStatement(sqlStatement.toString());
         	preparedStatement.setInt(1, recipentUID);
-        	
             resultSet = preparedStatement.executeQuery();
-            
             while(resultSet.next()){
             	JSONObject order = new JSONObject();
-            	
             	JSONObject info = new JSONObject();
             	info = OrderDAO.getOrderInfo(resultSet.getInt("UID"));
-            	
             	order.put("OID",resultSet.getInt("OID"));
                 order.put("UID",resultSet.getInt("UID"));
                 order.put("image", info.getString("image"));
@@ -137,21 +132,16 @@ public class OrderDAO{
         Connection connection = DBManager.getConnection();
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        
         StringBuilder sqlStatement = new StringBuilder();
         sqlStatement.append("SELECT * FROM order_list WHERE UID = ? ORDER BY state");
         try {
         	preparedStatement = connection.prepareStatement(sqlStatement.toString());
         	preparedStatement.setInt(1, UID);
-        	
             resultSet = preparedStatement.executeQuery();
-            
             while(resultSet.next()){
             	JSONObject order = new JSONObject();
-            	
             	JSONObject info = new JSONObject();
             	info = OrderDAO.getOrderInfo(resultSet.getInt("UID"));
-            	
             	order.put("OID",resultSet.getInt("OID"));
                 order.put("UID",resultSet.getInt("UID"));
                 order.put("image", info.getString("image"));
@@ -172,7 +162,6 @@ public class OrderDAO{
             }
             return orderList;
 		} catch (Exception ex) {
-			// TODO: handle exception
 			Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, ex);
             return null;
 		}finally {
@@ -185,12 +174,9 @@ public class OrderDAO{
         Connection connection = DBManager.getConnection();
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        
         StringBuilder sqlStatement = sortStrategy.sortOrder();
-
         try {
             preparedStatement = connection.prepareStatement(sqlStatement.toString());
-            
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
             	System.out.println("enter OK");
@@ -218,12 +204,8 @@ public class OrderDAO{
                 orderList.add(order);
             }
             System.out.println(orderList.toString());
-            if(orderList.isEmpty()){
+            if(orderList.isEmpty())
             	System.out.println("list is empty!");
-            }
-            else {
-            	System.out.println("list is ok!!");
-			}
             return orderList;
         } catch (SQLException ex) {
         	System.out.println("list is wrong!!");
@@ -279,7 +261,6 @@ public class OrderDAO{
         Connection connection = DBManager.getConnection();
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        
         StringBuilder sqlStatement = new StringBuilder();
         sqlStatement.append("SELECT * FROM order_list WHERE pickUp LIKE ? AND delivery LIKE ? AND company LIKE ? AND state = 0 ORDER BY latestTime");
         try {
@@ -287,9 +268,7 @@ public class OrderDAO{
         	preparedStatement.setString(1, pickUp);
         	preparedStatement.setString(2, delivery);
         	preparedStatement.setString(3, company);
-        	
             resultSet = preparedStatement.executeQuery();
-            
             while(resultSet.next()){
             	JSONObject order = new JSONObject();
             	JSONObject info = new JSONObject();

@@ -1,4 +1,4 @@
-package car;
+
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -12,6 +12,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
 public class DBManager extends HttpServlet {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	ServletConfig config;                           
     private static String username;                  
     private static String password;                   
@@ -28,7 +32,8 @@ public class DBManager extends HttpServlet {
     }
 
   
-    public static Connection getConnection() {
+    @SuppressWarnings("deprecation")
+	public static Connection getConnection() {
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             connection = DriverManager.getConnection(url, username, password);

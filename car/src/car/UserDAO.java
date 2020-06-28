@@ -1,5 +1,3 @@
-package car;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,7 +9,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 public class UserDAO {
-	static UserList userlist = UserList.getUserList();
+static UserList userlist = UserList.getUserList();
 	
 	public static Boolean insertUser(String nickName,String image){
     	
@@ -80,5 +78,30 @@ public class UserDAO {
             DBManager.closeAll(connection, preparedStatement, resultSet);
         }
         return list;
+	}
+	
+	public Boolean alterIdentifier(int UID) {
+        Connection connection = DBManager.getConnection();
+        PreparedStatement preparedStatement = null;
+
+        //鐢熸垚SQL浠ｇ爜l
+        StringBuilder sqlStatement = new StringBuilder();
+        sqlStatement.append("UPDATE user_list SET identifier = 1 WHERE UID = ? ");
+        
+        try{
+        	preparedStatement = connection.prepareStatement(sqlStatement.toString());
+        	preparedStatement.setInt(1,UID);
+        	userlist.updateList();
+            if(preparedStatement.executeUpdate() > 0)
+            	return true;
+            return false;
+        }
+		catch (SQLException ex) {
+			// TODO: handle exception
+			Logger.getLogger(UserFunction.class.getName()).log(Level.SEVERE, null, ex);
+			return false;
+		}finally {
+			DBManager.closeAll(connection, preparedStatement);
+		}
 	}
 }
